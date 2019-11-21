@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">googleMapFragment</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="dropped_pin">dropped_pin</string>
+</resources>
