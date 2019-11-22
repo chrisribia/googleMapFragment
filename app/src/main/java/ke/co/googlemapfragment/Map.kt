@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.map_fragment.*
 import java.util.*
@@ -32,7 +34,17 @@ class Map : Fragment() , OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap?) {
         map?.let {
             googleMap = it
+
+            val latitude = -4.0689664
+            val longitude = 39.662387200000005
+            val homeLatLng = LatLng(latitude, longitude)
+
+            val zoomLevel = 15f
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(homeLatLng, zoomLevel))
+            map.addMarker(MarkerOptions().position(homeLatLng))
+
             setMapLongClick(map)
+            setPoiClick(map)
         }
     }
 
@@ -44,6 +56,17 @@ class Map : Fragment() , OnMapReadyCallback {
         return inflater.inflate(R.layout.map_fragment, container, false)
     }
 
+
+    private fun setPoiClick(map: GoogleMap) {
+        map.setOnPoiClickListener {
+            val poiMarker = map.addMarker(
+                MarkerOptions()
+                    .position(it.latLng)
+                    .title(it.name)
+            )
+            poiMarker.showInfoWindow()
+        }
+    }
 
     private fun setMapLongClick(map:GoogleMap) {
 
